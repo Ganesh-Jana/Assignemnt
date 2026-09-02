@@ -1,0 +1,206 @@
+import java.util.*;
+public class Main{
+    
+    static class Node{
+        int data;
+        Node next;
+        Node prev;
+        
+        Node(int data){
+            this.data = data;
+        }
+    }
+    
+    static Node head = null;
+    static Node tail = null;
+    static int size = 0;
+    
+    static void insertFront(int x){
+        Node newNode = new Node(x);
+        if(head == null){
+            head = newNode;
+            tail = newNode;
+        }else{
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+    
+    static void insertEnd(int x){
+        Node newNode = new Node(x);
+        if(tail == null){
+            head = newNode;
+            tail = newNode;
+        }else{
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+    
+    static void insertAtPos(int pos, int val){
+        Node newNode = new Node(val);
+        if(pos < 1 || pos > size + 1){
+            System.out.println("Position out of range");
+            return;
+        }
+        if(pos == 1){
+            insertFront(val);
+            System.out.println("Node inserted");
+            return;
+        }
+        if(pos == size + 1){
+            insertEnd(val);
+            System.out.println("Node inserted");
+            return;
+        }
+        Node temp = head;
+        for(int i = 1; i<pos-1; i++){
+            temp = temp.next;
+        }
+        newNode.next = temp.next;
+        newNode.prev = temp;
+        temp.next.prev = newNode;
+        temp.next = newNode;
+        size++;
+        
+        System.out.println("Node Inserted");
+    }
+    
+    static void deleteFirst(){
+        if(head == null){
+            System.out.println("List is Empty");
+            return;
+        }
+        if(head == tail){
+            head = tail = null;
+        }
+        else{
+            head = head.next;
+            head.prev = null;
+        }
+        size--;
+    }
+    
+    static void deleteEnd(){
+        if(tail == null){
+            System.out.println("List is empty");
+            return;
+        }
+        if(head == tail){
+            head = tail = null;
+        }else{
+            tail = tail.prev;
+            tail.next = null;
+        }
+        size--;
+    }
+    
+    static void deletePos(int pos){
+        if(pos<1 || pos > size){
+            System.out.println("Position out of range");
+            return;
+        }
+        if(pos == 1){
+            deleteFirst();
+            return;
+        }
+        if(pos == size){
+            deleteEnd();
+            return;
+        }
+        Node temp = head;
+        for(int i = 1; i<pos; i++){
+            temp = temp.next;
+        }
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        size--;
+    }
+    
+    static void search(int x){
+        Node temp = head;
+        int index = 0;
+        while(temp != null){
+            if(temp.data == x){
+                System.out.println("The element "+x+" is at index " + (index+1) + " in the list");
+                return;
+            }
+            temp = temp.next;
+            index++;
+        }    
+            System.out.println("The element "+ x + " is not found in the list");
+    
+    }
+    static void display(){
+        if (head == null){
+            System.out.println("List is empty");
+            return;
+        }
+        Node temp = head;
+        while(temp != null){
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        
+        while(sc.hasNextInt()){
+            int choice = sc.nextInt();
+            
+            switch(choice){
+                case 1:
+                    int x1 = sc.nextInt();
+                    insertFront(x1);
+                    break;
+                
+                case 2:
+                    int x2 = sc.nextInt();
+                    insertEnd(x2);
+                    break;
+                    
+                case 3:
+                    int pos1 = sc.nextInt();
+                    int val = sc.nextInt();
+                    insertAtPos(pos1, val);
+                    break;
+                    
+                case 4:
+                    deleteFirst();
+                    break;
+                
+                case 5:
+                    deleteEnd();
+                    break;
+                
+                case 6:
+                    int x6 = sc.nextInt();
+                    deletePos(x6);
+                    break;
+                
+                case 7:
+                    int x7 = sc.nextInt();
+                    search(x7);
+                    break;
+                
+                case 8:
+                    display();
+                    break;
+                
+                case 9:
+                    sc.close();
+                    return;
+                    
+                default:
+                    System.out.println("Wrong Choice");
+                    
+            }
+        }
+    }
+}
